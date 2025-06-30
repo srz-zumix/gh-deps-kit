@@ -30,3 +30,8 @@ go.work.sum
 # Editor/IDE
 # .idea/
 # .vscode/
+
+/gh-deps-kit
+/gh-deps-kit.exe
+
+[Tt]emp/
