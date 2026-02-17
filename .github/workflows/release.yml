@@ -18,7 +18,7 @@ jobs:
   release:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: cli/gh-extension-precompile@561b19deda1228a0edf856c3325df87416f8c9bd # v2.0.0
         with:
           generate_attestations: true
