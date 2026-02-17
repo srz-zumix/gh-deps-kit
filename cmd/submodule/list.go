@@ -49,7 +49,7 @@ func NewListCmd() *cobra.Command {
 
 			renderer := render.NewRenderer(opts.Exporter)
 			if nameOnly {
-				renderer.RenderSubmoduleNames(submodules)
+				renderer.RenderNames(submodules)
 			} else {
 				renderer.RenderSubmodules(submodules)
 			}
