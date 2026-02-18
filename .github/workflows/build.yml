@@ -3,9 +3,13 @@ name: Build and Test
 on:
   pull_request:
 
+permissions: {}
+
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     env:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -16,9 +20,9 @@ jobs:
           persist-credentials: false
 
       - name: Set up Go
-        uses: actions/setup-go@v5
+        uses: actions/setup-go@v6
         with:
-          go-version: '1.24'
+          go-version-file: go.mod
 
       - name: Install dependencies
         run: go mod tidy
