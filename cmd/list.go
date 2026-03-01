@@ -37,7 +37,8 @@ func NewListCmd() *cobra.Command {
 				return fmt.Errorf("failed to create GitHub client: %w", err)
 			}
 
-			sbom, err := gh.GetRepositoryDependencyGraphSBOM(context.Background(), client, repository)
+			ctx := context.Background()
+			sbom, err := gh.GetRepositoryDependencyGraphSBOM(ctx, client, repository)
 			if err != nil {
 				return fmt.Errorf("failed to get SBOM: %w", err)
 			}

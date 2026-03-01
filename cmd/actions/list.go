@@ -37,7 +37,8 @@ func NewListCmd() *cobra.Command {
 				return fmt.Errorf("failed to create GitHub client: %w", err)
 			}
 
-			sboms, _, err := gh.GetActionsDependencyGraph(context.Background(), client, repository, recursive)
+			ctx := context.Background()
+			sboms, _, err := gh.GetActionsDependencyGraph(ctx, client, repository, recursive)
 			if err != nil {
 				return fmt.Errorf("failed to get actions dependencies recursively: %w", err)
 			}

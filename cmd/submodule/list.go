@@ -38,7 +38,8 @@ func NewListCmd() *cobra.Command {
 				return fmt.Errorf("failed to create GitHub client: %w", err)
 			}
 
-			submodules, err := gh.GetRepositorySubmodules(context.Background(), client, repository, recursive)
+			ctx := context.Background()
+			submodules, err := gh.GetRepositorySubmodules(ctx, client, repository, recursive)
 			if err != nil {
 				return fmt.Errorf("failed to get submodules: %w", err)
 			}
