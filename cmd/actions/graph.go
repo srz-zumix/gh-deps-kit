@@ -40,7 +40,8 @@ func NewGraphCmd() *cobra.Command {
 				return fmt.Errorf("failed to create GitHub client: %w", err)
 			}
 
-			_, edges, err := gh.GetActionsDependencyGraph(context.Background(), client, repository, recursive)
+			ctx := context.Background()
+			_, edges, err := gh.GetActionsDependencyGraph(ctx, client, repository, recursive)
 			if err != nil {
 				return fmt.Errorf("failed to get actions dependency graph: %w", err)
 			}
