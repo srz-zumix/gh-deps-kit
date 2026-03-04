@@ -53,10 +53,31 @@ Output dependency relationships of GitHub Actions as a Mermaid flowchart. Use --
 
 | Flag | Short | Default | Description |
 | ------ | ------- | --------- | ------------- |
-| `--format` | | `"mermaid"` | Output format: {json\|mermaid\|markdown} |
+| `--format` | | `"mermaid"` | Output format: {json\|dot\|drawio\|mermaid\|markdown} |
 | `--jq` | `-q` | | Filter JSON output using a jq expression |
 | `--output` | `-o` | | Output file path (default: stdout) |
 | `--recursive` | `-r` | `false` | Recursively traverse referenced action repositories |
+| `--repo` | `-R` | `""` | The repository in the format 'owner/repo' |
+| `--template` | `-t` | | Format JSON output using a Go template; see "gh help formatting" |
+
+### List action dependencies from workflow YAML files
+
+```sh
+gh deps-kit actions workflow [<workflow-id> | <workflow-name> | <filename>] [flags]
+```
+
+Parse workflow YAML (.github/workflows/*.yml) and action.yml files in the repository to list GitHub Actions dependencies. Unlike the 'list' command which uses the Dependency Graph API, this command directly parses YAML files. Optionally specify a workflow by its ID, name, or filename to parse only that workflow.
+
+**Flags:**
+
+| Flag | Short | Default | Description |
+| ------ | ------- | --------- | ------------- |
+| `--fields` | | `"Name,Version"` | Comma-separated list of fields to display in table output. Available fields: Name, Version, Owner, Repo, Path, Raw, Using, Node_Version |
+| `--format` | | `""` | Output format: {json\|dot\|drawio\|mermaid\|markdown} |
+| `--jq` | `-q` | | Filter JSON output using a jq expression |
+| `--name-only` | | `false` | Output only action names |
+| `--recursive` | `-r` | `false` | Recursively traverse referenced action repositories |
+| `--ref` | | `""` | Git reference (branch, tag, or commit SHA) to read workflow files from |
 | `--repo` | `-R` | `""` | The repository in the format 'owner/repo' |
 | `--template` | `-t` | | Format JSON output using a Go template; see "gh help formatting" |
 
