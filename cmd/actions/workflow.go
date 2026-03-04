@@ -96,6 +96,6 @@ func NewWorkflowCmd() *cobra.Command {
 	// Use AddFormatFlags to set up --format, --jq, --template with PreRunE
 	cmdutil.AddFormatFlags(cmd, &opts.Exporter)
 	// Setup format flag to also accept "mermaid" and handle non-JSON format validation
-	cmdflags.SetupFormatFlagWithNonJSONFormats(cmd, &opts.Exporter, &format, "", []string{"mermaid", "markdown"})
+	cmdflags.SetupFormatFlagWithNonJSONFormats(cmd, &opts.Exporter, &format, "", []string{"dot", "drawio", "mermaid", "markdown"})
 	return cmd
 }
