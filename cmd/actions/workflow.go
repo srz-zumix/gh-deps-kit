@@ -21,6 +21,7 @@ func NewWorkflowCmd() *cobra.Command {
 	var repo string
 	var ref string
 	var nameOnly bool
+	var nameWithRef bool
 	var recursive bool
 	var format string
 	var fields []string
@@ -74,9 +75,13 @@ func NewWorkflowCmd() *cobra.Command {
 			}
 
 			renderer := render.NewRenderer(opts.Exporter)
-			if nameOnly {
+			if nameOnly || nameWithRef {
 				refs := gh.FlattenWorkflowDependencies(deps)
-				renderer.RenderNames(refs)
+				if nameWithRef {
+					renderer.RenderVersionedNames(refs)
+				} else {
+					renderer.RenderNames(refs)
+				}
 			} else {
 				if len(fields) == 0 {
 					fields = []string{"Name", "Version"}
@@ -88,6 +93,7 @@ func NewWorkflowCmd() *cobra.Command {
 	}
 	f := cmd.Flags()
 	f.BoolVar(&nameOnly, "name-only", false, "Output only action names")
+	f.BoolVar(&nameWithRef, "name-with-ref", false, "Output action names with version ref (e.g. actions/checkout@v4)")
 	f.BoolVarP(&recursive, "recursive", "r", false, "Recursively traverse referenced action repositories")
 	f.StringVarP(&repo, "repo", "R", "", "The repository in the format 'owner/repo'")
 	f.StringVar(&ref, "ref", "", "Git reference (branch, tag, or commit SHA) to read workflow files from")

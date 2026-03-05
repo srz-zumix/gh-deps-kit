@@ -76,6 +76,7 @@ Parse workflow YAML (.github/workflows/*.yml) and action.yml files in the reposi
 | `--format` | | `""` | Output format: {json\|dot\|drawio\|mermaid\|markdown} |
 | `--jq` | `-q` | | Filter JSON output using a jq expression |
 | `--name-only` | | `false` | Output only action names |
+| `--name-with-ref` | | `false` | Output action names with version ref (e.g. actions/checkout@v4) |
 | `--recursive` | `-r` | `false` | Recursively traverse referenced action repositories |
 | `--ref` | | `""` | Git reference (branch, tag, or commit SHA) to read workflow files from |
 | `--repo` | `-R` | `""` | The repository in the format 'owner/repo' |
