@@ -60,6 +60,26 @@ Output dependency relationships of GitHub Actions as a Mermaid flowchart. Use --
 | `--repo` | `-R` | `""` | The repository in the format 'owner/repo' |
 | `--template` | `-t` | | Format JSON output using a Go template; see "gh help formatting" |
 
+### Lint workflow and action YAML files
+
+```sh
+gh deps-kit actions lint [<workflow-id> | <workflow-name> | <filename>] [flags] [-- <tool-args>...]
+```
+
+Run an external lint tool against workflow YAML and action.yml files. Files are fetched via the GitHub API and saved to a temporary directory, then the specified lint tool is executed against them. Optionally specify a workflow by its ID, name, or filename to lint only that workflow's dependencies. Use --recursive to also lint files from referenced action repositories and reusable workflows. Extra arguments after '--' are passed directly to the lint tool.
+
+Supported tools: actionlint, zizmor
+
+**Flags:**
+
+| Flag | Short | Default | Description |
+| ------ | ------- | --------- | ------------- |
+| `--recursive` | `-r` | `false` | Recursively traverse referenced action repositories |
+| `--ref` | | `""` | Git reference (branch, tag, or commit SHA) to read workflow files from |
+| `--repo` | `-R` | `""` | The repository in the format 'owner/repo' |
+| `--tmpdir` | | `""` | Directory to store downloaded files (default: auto-created temp dir, removed after lint) |
+| `--tool` | | `"zizmor"` | Lint tool to use (supported: actionlint, zizmor) |
+
 ### List action dependencies from workflow YAML files
 
 ```sh

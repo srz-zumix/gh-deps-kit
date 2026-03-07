@@ -17,6 +17,7 @@ func NewActionsCmd() *cobra.Command {
 	}
 	cmd.AddCommand(actions.NewListCmd())
 	cmd.AddCommand(actions.NewGraphCmd())
+	cmd.AddCommand(actions.NewLintCmd())
 	cmd.AddCommand(actions.NewWorkflowCmd())
 	return cmd
 }

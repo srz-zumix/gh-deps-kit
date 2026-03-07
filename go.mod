@@ -6,7 +6,8 @@ require github.com/spf13/cobra v1.10.2
 
 require (
 	github.com/cli/cli/v2 v2.86.0
-	github.com/srz-zumix/go-gh-extension v0.3.5
+	github.com/cli/go-gh/v2 v2.13.0
+	github.com/srz-zumix/go-gh-extension v0.3.7
 )
 
 require (
@@ -30,7 +31,6 @@ require (
 	github.com/charmbracelet/x/exp/strings v0.0.0-20250630141444-821143405392 // indirect
 	github.com/charmbracelet/x/term v0.2.1 // indirect
 	github.com/cli/browser v1.3.0 // indirect
-	github.com/cli/go-gh/v2 v2.13.0 // indirect
 	github.com/cli/safeexec v1.0.1 // indirect
 	github.com/cli/shurcooL-graphql v0.0.4 // indirect
 	github.com/clipperhouse/displaywidth v0.6.2 // indirect
