@@ -116,7 +116,9 @@ Supported tools: actionlint, zizmor`,
 					return fmt.Errorf("failed to create temporary directory: %w", err)
 				}
 				tmpDir = d
-				defer os.RemoveAll(tmpDir)
+				defer func() {
+					_ = os.RemoveAll(tmpDir)
+				}()
 			} else {
 				if err := os.MkdirAll(tmpDir, 0o755); err != nil {
 					return fmt.Errorf("failed to create directory %s: %w", tmpDir, err)
