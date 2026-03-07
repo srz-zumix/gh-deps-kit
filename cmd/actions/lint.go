@@ -250,8 +250,8 @@ func runZizmor(tmpDir string, files []string, extraArgs []string) error {
 
 // downloadDependencyFiles downloads all source files referenced in workflow dependencies
 // to the specified directory, preserving directory structure.
-// Local sources (e.g. ".github/workflows/ci.yml") are stored under their original path.
-// Remote sources (e.g. "owner/repo:action.yml") are stored under "owner/repo/path".
+// All sources are stored under "owner/repo/path" to provide proper repository context
+// for lint tools (e.g. zizmor infers the repository from the file path).
 // Returns the list of downloaded file paths (relative to destDir).
 func downloadDependencyFiles(ctx context.Context, g *gh.GitHubClient, fallback *gh.GitHubClient, deps []parser.WorkflowDependency, destDir string) ([]string, error) {
 	seen := make(map[string]bool)
@@ -272,13 +272,16 @@ func downloadDependencyFiles(ctx context.Context, g *gh.GitHubClient, fallback *
 			continue
 		}
 
-		// Determine the destination path
+		// Determine the destination path: always use "owner/repo/path" structure
+		// so that lint tools can infer the repository context from the file path.
 		var destPath string
 		if isRemote {
 			// Remote: "owner/repo:path" -> "owner/repo/path"
 			destPath = dep.Source[:strings.Index(dep.Source, ":")] + "/" + filePath
 		} else {
-			destPath = dep.Source
+			// Local: "path" -> "owner/repo/path"
+			repoKey := dep.Repository.Owner + "/" + dep.Repository.Name
+			destPath = repoKey + "/" + dep.Source
 		}
 
 		fullPath := filepath.Join(destDir, destPath)
