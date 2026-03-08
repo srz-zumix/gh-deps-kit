@@ -97,7 +97,7 @@ func NewWorkflowCmd() *cobra.Command {
 	f.BoolVarP(&recursive, "recursive", "r", false, "Recursively traverse referenced action repositories")
 	f.StringVarP(&repo, "repo", "R", "", "The repository in the format 'owner/repo'")
 	f.StringVar(&ref, "ref", "", "Git reference (branch, tag, or commit SHA) to read workflow files from")
-	f.StringSliceVar(&fields, "fields", nil, `Comma-separated list of fields to display in table output (default: Name,Version). Available fields: Name, Version, Owner, Repo, Path, Raw, Using, Node_Version`)
+	cmdutil.StringSliceEnumFlag(cmd, &fields, "fields", "", nil, render.WorkflowDependencyFields, "Comma-separated list of fields to display in table output")
 
 	// Use AddFormatFlags to set up --format, --jq, --template with PreRunE
 	cmdutil.AddFormatFlags(cmd, &opts.Exporter)
