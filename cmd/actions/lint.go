@@ -8,6 +8,7 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/cli/cli/v2/pkg/cmdutil"
 	"github.com/cli/go-gh/v2/pkg/repository"
 	"github.com/spf13/cobra"
 	"github.com/srz-zumix/go-gh-extension/pkg/gh"
@@ -38,10 +39,6 @@ Extra arguments after '--' are passed directly to the lint tool.
 Supported tools: actionlint, zizmor`,
 		Args: cobra.ArbitraryArgs,
 		RunE: func(cmd *cobra.Command, args []string) error {
-			if !isSupportedLintTool(tool) {
-				return fmt.Errorf("unsupported lint tool %q (supported: %s)", tool, strings.Join(supportedLintTools, ", "))
-			}
-
 			if _, err := exec.LookPath(tool); err != nil {
 				return fmt.Errorf("lint tool %q not found in PATH: %w", tool, err)
 			}
@@ -140,23 +137,13 @@ Supported tools: actionlint, zizmor`,
 	}
 
 	f := cmd.Flags()
-	f.StringVar(&tool, "tool", "zizmor", "Lint tool to use (supported: "+strings.Join(supportedLintTools, ", ")+")")
+	cmdutil.StringEnumFlag(cmd, &tool, "tool", "", "zizmor", supportedLintTools, "Lint tool to use")
 	f.BoolVarP(&recursive, "recursive", "r", false, "Recursively traverse referenced action repositories")
 	f.StringVarP(&repo, "repo", "R", "", "The repository in the format 'owner/repo'")
 	f.StringVar(&ref, "ref", "", "Git reference (branch, tag, or commit SHA) to read workflow files from")
 	f.StringVar(&tmpDir, "tmpdir", "", "Directory to store downloaded files (default: auto-created temp dir, removed after lint)")
 
 	return cmd
-}
-
-// isSupportedLintTool checks if the given tool name is in the supported list
-func isSupportedLintTool(tool string) bool {
-	for _, t := range supportedLintTools {
-		if t == tool {
-			return true
-		}
-	}
-	return false
 }
 
 // runLintTool executes the lint tool with the downloaded files
