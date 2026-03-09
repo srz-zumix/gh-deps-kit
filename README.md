@@ -32,8 +32,9 @@ List dependency packages in the repository's SBOM.
 
 | Flag | Short | Default | Description |
 | ------ | ------- | --------- | ------------- |
-| `--ecosystem` | `-e` | `""` | The ecosystem of the dependencies |
+| `--exclude` | `-e` | | Exclude packages by ecosystem (can be specified multiple times) |
 | `--format` | | | Output format: {json} |
+| `--include` | `-i` | | Filter by ecosystem (can be specified multiple times) |
 | `--jq` | `-q` | | Filter JSON output using a jq expression |
 | `--name-only` | | `false` | Output only team names |
 | `--repo` | `-R` | `""` | The repository in the format 'owner/repo' |
