@@ -18,7 +18,8 @@ type ListOptions struct {
 // NewListCmd returns the actions list command
 func NewListCmd() *cobra.Command {
 	var repo string
-	var ecosystem string
+	var includeEcosystems []string
+	var excludeEcosystems []string
 	var nameOnly bool
 	opts := &ListOptions{}
 
@@ -43,15 +44,19 @@ func NewListCmd() *cobra.Command {
 				return fmt.Errorf("failed to get SBOM: %w", err)
 			}
 
-			if ecosystem != "" {
-				sbom = gh.FilterSBOMPackage(sbom, ecosystem)
+			if len(includeEcosystems) > 0 {
+				sbom = gh.FilterSBOMPackages(sbom, includeEcosystems)
+			}
+
+			if len(excludeEcosystems) > 0 {
+				sbom = gh.ExcludeSBOMPackages(sbom, excludeEcosystems)
 			}
 
 			renderer := render.NewRenderer(opts.Exporter)
 			if nameOnly {
 				renderer.RenderNames(sbom.SBOM.Packages)
 			} else {
-				if ecosystem != "" {
+				if len(includeEcosystems) > 0 {
 					renderer.RenderSBOMPackages(sbom, []string{"Name", "Version"})
 				} else {
 					renderer.RenderSBOMPackagesDefault(sbom)
@@ -62,7 +67,8 @@ func NewListCmd() *cobra.Command {
 	}
 	f := cmd.Flags()
 	f.BoolVar(&nameOnly, "name-only", false, "Output only team names")
-	f.StringVarP(&ecosystem, "ecosystem", "e", "", "The ecosystem of the dependencies")
+	f.StringArrayVarP(&includeEcosystems, "include", "i", nil, "Filter by ecosystem (can be specified multiple times)")
+	f.StringArrayVarP(&excludeEcosystems, "exclude", "e", nil, "Exclude packages by ecosystem (can be specified multiple times)")
 	f.StringVarP(&repo, "repo", "R", "", "The repository in the format 'owner/repo'")
 	cmdutil.AddFormatFlags(cmd, &opts.Exporter)
 	return cmd
