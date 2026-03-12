@@ -64,7 +64,7 @@ func NewListCmd() *cobra.Command {
 	}
 	f := cmd.Flags()
 	f.BoolVar(&nameOnly, "name-only", false, "Output only package names")
-	f.StringVar(&path, "path", "", "Path to manifest.json within the repository (default \"Packages/manifest.json\")")
+	f.StringVar(&path, "path", "Packages/manifest.json", "Path to manifest.json within the repository")
 	f.StringVar(&ref, "ref", "", "Branch, tag, or commit SHA to read from (default: repository default branch)")
 	f.StringVarP(&repo, "repo", "R", "", "The repository in the format 'owner/repo'")
 	cmdutil.StringSliceEnumFlag(cmd, &fields, "fields", "", nil, render.UnityPackageFields, "Comma-separated list of fields to display in table output")
