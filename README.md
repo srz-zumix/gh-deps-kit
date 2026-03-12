@@ -126,6 +126,30 @@ List dependency packages related to GitHub Actions in the repository's SBOM. Use
 
 ### List repository submodules
 
+### Unity
+
+### List Unity package dependencies
+
+```sh
+gh deps-kit unity list [flags]
+```
+
+List dependency packages defined in a Unity project's Packages/manifest.json. The file path within the repository defaults to `Packages/manifest.json` and can be overridden with `--path`. Use `--ref` to target a specific branch, tag, or commit.
+
+**Flags:**
+
+| Flag | Short | Default | Description |
+| ------ | ------- | --------- | ------------- |
+| `--format` | | | Output format: {json} |
+| `--jq` | `-q` | | Filter JSON output using a jq expression |
+| `--name-only` | | `false` | Output only package names |
+| `--path` | | `"Packages/manifest.json"` | Path to manifest.json within the repository |
+| `--ref` | | `""` | Branch, tag, or commit SHA to read from (default: repository default branch) |
+| `--repo` | `-R` | `""` | The repository in the format 'owner/repo' |
+| `--template` | `-t` | | Format JSON output using a Go template; see "gh help formatting" |
+
+### List repository submodules
+
 ```sh
 gh deps-kit submodule list [flags]
 ```
