@@ -78,17 +78,16 @@ func NewWorkflowCmd() *cobra.Command {
 			if nameOnly || nameWithRef {
 				refs := gh.FlattenWorkflowDependencies(deps)
 				if nameWithRef {
-					renderer.RenderVersionedNames(refs)
+					return renderer.RenderVersionedNames(refs)
 				} else {
-					renderer.RenderNames(refs)
+					return renderer.RenderNames(refs)
 				}
 			} else {
 				if len(fields) == 0 {
 					fields = []string{"Name", "Version"}
 				}
-				renderer.RenderWorkflowDependenciesWithFormat(format, deps, fields)
+				return renderer.RenderWorkflowDependenciesWithFormat(format, deps, fields)
 			}
-			return nil
 		},
 	}
 	f := cmd.Flags()

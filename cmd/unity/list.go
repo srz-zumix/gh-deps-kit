@@ -55,11 +55,10 @@ func NewListCmd() *cobra.Command {
 
 			renderer := render.NewRenderer(opts.Exporter)
 			if nameOnly {
-				renderer.RenderNames(packages)
+				return renderer.RenderNames(packages)
 			} else {
-				renderer.RenderUnityPackages(packages, fields)
+				return renderer.RenderUnityPackages(packages, fields)
 			}
-			return nil
 		},
 	}
 	f := cmd.Flags()
