@@ -60,8 +60,7 @@ func NewGraphCmd() *cobra.Command {
 				renderer = render.NewRenderer(opts.Exporter)
 			}
 
-			renderer.RenderGraphEdge(format, edges)
-			return nil
+			return renderer.RenderGraphEdge(format, edges)
 		},
 	}
 	f := cmd.Flags()

@@ -54,15 +54,14 @@ func NewListCmd() *cobra.Command {
 
 			renderer := render.NewRenderer(opts.Exporter)
 			if nameOnly {
-				renderer.RenderNames(sbom.SBOM.Packages)
+				return renderer.RenderNames(sbom.SBOM.Packages)
 			} else {
 				if len(includeEcosystems) > 0 {
-					renderer.RenderSBOMPackages(sbom, []string{"Name", "Version"})
+					return renderer.RenderSBOMPackages(sbom, []string{"Name", "Version"})
 				} else {
-					renderer.RenderSBOMPackagesDefault(sbom)
+					return renderer.RenderSBOMPackages(sbom, nil)
 				}
 			}
-			return nil
 		},
 	}
 	f := cmd.Flags()

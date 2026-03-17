@@ -50,11 +50,10 @@ func NewListCmd() *cobra.Command {
 
 			renderer := render.NewRenderer(opts.Exporter)
 			if nameOnly {
-				renderer.RenderNames(submodules)
+				return renderer.RenderNames(submodules)
 			} else {
-				renderer.RenderSubmodules(submodules)
+				return renderer.RenderSubmodules(submodules, nil)
 			}
-			return nil
 		},
 	}
 	f := cmd.Flags()

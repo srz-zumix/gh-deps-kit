@@ -46,11 +46,10 @@ func NewListCmd() *cobra.Command {
 			renderer := render.NewRenderer(opts.Exporter)
 			if nameOnly {
 				packages := gh.FlattenSBOMPackages(sboms)
-				renderer.RenderNames(packages)
+				return renderer.RenderNames(packages)
 			} else {
-				renderer.RenderMultipleSBOMPackages(sboms, []string{"Name", "Version"})
+				return renderer.RenderMultipleSBOMPackages(sboms, []string{"Name", "Version"})
 			}
-			return nil
 		},
 	}
 	f := cmd.Flags()
