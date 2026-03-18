@@ -83,9 +83,6 @@ func NewWorkflowCmd() *cobra.Command {
 					return renderer.RenderNames(refs)
 				}
 			} else {
-				if len(fields) == 0 {
-					fields = []string{"Name", "Version"}
-				}
 				return renderer.RenderWorkflowDependenciesWithFormat(format, deps, fields)
 			}
 		},
