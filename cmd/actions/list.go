@@ -1,7 +1,6 @@
 package actions
 
 import (
-	"context"
 	"fmt"
 
 	"github.com/cli/cli/v2/pkg/cmdutil"
@@ -37,7 +36,7 @@ func NewListCmd() *cobra.Command {
 				return fmt.Errorf("failed to create GitHub client: %w", err)
 			}
 
-			ctx := context.Background()
+			ctx := cmd.Context()
 			sboms, _, err := gh.GetActionsDependencyGraph(ctx, client, repository, recursive)
 			if err != nil {
 				return fmt.Errorf("failed to get actions dependencies recursively: %w", err)

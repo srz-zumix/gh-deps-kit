@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"context"
 	"fmt"
 
 	"github.com/cli/cli/v2/pkg/cmdutil"
@@ -38,7 +37,7 @@ func NewListCmd() *cobra.Command {
 				return fmt.Errorf("failed to create GitHub client: %w", err)
 			}
 
-			ctx := context.Background()
+			ctx := cmd.Context()
 			sbom, err := gh.GetRepositoryDependencyGraphSBOM(ctx, client, repository)
 			if err != nil {
 				return fmt.Errorf("failed to get SBOM: %w", err)
@@ -68,6 +67,12 @@ func NewListCmd() *cobra.Command {
 	f.BoolVar(&nameOnly, "name-only", false, "Output only team names")
 	f.StringArrayVarP(&includeEcosystems, "include", "i", nil, "Filter by ecosystem (can be specified multiple times)")
 	f.StringArrayVarP(&excludeEcosystems, "exclude", "e", nil, "Exclude packages by ecosystem (can be specified multiple times)")
+	_ = cmd.RegisterFlagCompletionFunc("include", func(_ *cobra.Command, _ []string, _ string) ([]string, cobra.ShellCompDirective) {
+		return gh.SBOMEcosystems, cobra.ShellCompDirectiveNoFileComp
+	})
+	_ = cmd.RegisterFlagCompletionFunc("exclude", func(_ *cobra.Command, _ []string, _ string) ([]string, cobra.ShellCompDirective) {
+		return gh.SBOMEcosystems, cobra.ShellCompDirectiveNoFileComp
+	})
 	f.StringVarP(&repo, "repo", "R", "", "The repository in the format 'owner/repo'")
 	cmdutil.AddFormatFlags(cmd, &opts.Exporter)
 	return cmd

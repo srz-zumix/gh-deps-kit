@@ -1,7 +1,6 @@
 package submodule
 
 import (
-	"context"
 	"fmt"
 
 	"github.com/cli/cli/v2/pkg/cmdutil"
@@ -38,7 +37,7 @@ func NewListCmd() *cobra.Command {
 				return fmt.Errorf("failed to create GitHub client: %w", err)
 			}
 
-			ctx := context.Background()
+			ctx := cmd.Context()
 			submodules, err := gh.GetRepositorySubmodules(ctx, client, repository, recursive)
 			if err != nil {
 				return fmt.Errorf("failed to get submodules: %w", err)
