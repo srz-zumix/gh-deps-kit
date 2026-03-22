@@ -1,7 +1,6 @@
 package unity
 
 import (
-	"context"
 	"fmt"
 
 	"github.com/cli/cli/v2/pkg/cmdutil"
@@ -41,7 +40,7 @@ func NewListCmd() *cobra.Command {
 				return fmt.Errorf("failed to create GitHub client: %w", err)
 			}
 
-			ctx := context.Background()
+			ctx := cmd.Context()
 			manifest, err := unity.GetUnityManifest(ctx, client, repository, path, ref)
 			if err != nil {
 				return fmt.Errorf("failed to get Unity manifest: %w", err)

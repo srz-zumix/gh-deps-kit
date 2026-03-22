@@ -67,8 +67,6 @@ Supported tools: actionlint, zizmor`,
 				refPtr = &ref
 			}
 
-			ctx := context.Background()
-
 			// Separate workflow selector (before '--') from tool args (after '--')
 			var selector string
 			var toolArgs []string
@@ -86,6 +84,7 @@ Supported tools: actionlint, zizmor`,
 				toolArgs = args[dashIdx:]
 			}
 
+			ctx := cmd.Context()
 			var deps []parser.WorkflowDependency
 			if selector != "" {
 				// Resolve selector to a specific workflow file path, then parse only that file

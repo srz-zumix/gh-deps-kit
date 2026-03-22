@@ -1,7 +1,6 @@
 package actions
 
 import (
-	"context"
 	"fmt"
 
 	"github.com/cli/cli/v2/pkg/cmdutil"
@@ -57,7 +56,7 @@ func NewWorkflowCmd() *cobra.Command {
 				refPtr = &ref
 			}
 
-			ctx := context.Background()
+			ctx := cmd.Context()
 			var deps []parser.WorkflowDependency
 			if len(args) > 0 {
 				// Resolve selector to a specific workflow file path, then parse only that file
