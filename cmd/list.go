@@ -64,7 +64,7 @@ func NewListCmd() *cobra.Command {
 		},
 	}
 	f := cmd.Flags()
-	f.BoolVar(&nameOnly, "name-only", false, "Output only team names")
+	f.BoolVar(&nameOnly, "name-only", false, "Output only package names")
 	f.StringArrayVarP(&includeEcosystems, "include", "i", nil, "Filter by ecosystem (can be specified multiple times)")
 	f.StringArrayVarP(&excludeEcosystems, "exclude", "e", nil, "Exclude packages by ecosystem (can be specified multiple times)")
 	_ = cmd.RegisterFlagCompletionFunc("include", func(_ *cobra.Command, _ []string, _ string) ([]string, cobra.ShellCompDirective) {
