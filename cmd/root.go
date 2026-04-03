@@ -8,6 +8,14 @@ import (
 
 	"github.com/spf13/cobra"
 	"github.com/srz-zumix/gh-deps-kit/version"
+	"github.com/srz-zumix/go-gh-extension/pkg/actions"
+	"github.com/srz-zumix/go-gh-extension/pkg/logger"
+	"github.com/srz-zumix/go-gh-extension/pkg/gh/guardrails"
+)
+
+var (
+	logLevel string
+	readOnly bool
 )
 
 var rootCmd = &cobra.Command{
@@ -15,6 +23,10 @@ var rootCmd = &cobra.Command{
 	Short:   "A tool to manage GitHub Dependency graph",
 	Long:    `gh-deps-kit is a tool to manage GitHub Dependency graph.`,
 	Version: version.Version,
+	PersistentPreRun: func(cmd *cobra.Command, args []string) {
+		logger.SetLogLevel(logLevel)
+		guardrails.NewGuardrail(guardrails.ReadOnlyOption(readOnly))
+	},
 }
 
 func Execute() {
@@ -25,5 +37,9 @@ func Execute() {
 }
 
 func init() {
-	rootCmd.AddCommand(NewListCmd())
+	if actions.IsRunsOn() {
+		rootCmd.SetErrPrefix(actions.GetErrorPrefix())
+	}
+	logger.AddCmdFlag(rootCmd, rootCmd.PersistentFlags(), &logLevel, "log-level", "L")
+	rootCmd.PersistentFlags().BoolVar(&readOnly, "read-only", false, "Run in read-only mode (prevent write operations)")
 }

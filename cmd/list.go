@@ -77,3 +77,7 @@ func NewListCmd() *cobra.Command {
 	cmdutil.AddFormatFlags(cmd, &opts.Exporter)
 	return cmd
 }
+
+func init() {
+	rootCmd.AddCommand(NewListCmd())
+}
