@@ -24,13 +24,17 @@ func NewWorkflowCmd() *cobra.Command {
 	var recursive bool
 	var format string
 	var fields []string
+	var minNodeVersion int
 	opts := &WorkflowOptions{}
 
 	cmd := &cobra.Command{
 		Use:   "workflow [<workflow-id> | <workflow-name> | <filename>]",
 		Short: "List action dependencies from workflow YAML files",
-		Long:  "Parse workflow YAML (.github/workflows/*.yml) and action.yml files in the repository to list GitHub Actions dependencies. Unlike the 'list' command which uses the Dependency Graph API, this command directly parses YAML files. Optionally specify a workflow by its ID, name, or filename to parse only that workflow.",
-		Args:  cobra.MaximumNArgs(1),
+		Long: `Parse workflow YAML (.github/workflows/*.yml) and action.yml files in the repository to list GitHub Actions dependencies.
+Unlike the 'list' command which uses the Dependency Graph API, this command directly parses YAML files.
+Optionally specify a workflow by its ID, name, or filename to parse only that workflow.
+Use --min-node-version to filter for workflows and actions that depend on Node actions older than the specified version (automatically enables --recursive).`,
+		Args: cobra.MaximumNArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			repository, err := parser.Repository(parser.RepositoryInput(repo))
 			if err != nil {
@@ -56,6 +60,15 @@ func NewWorkflowCmd() *cobra.Command {
 				refPtr = &ref
 			}
 
+			// --min-node-version must be non-negative and requires recursive traversal
+			// to populate Using fields when the filter is enabled.
+			if minNodeVersion < 0 {
+				return fmt.Errorf("invalid value for --min-node-version: must be >= 0")
+			}
+			if minNodeVersion > 0 {
+				recursive = true
+			}
+
 			ctx := cmd.Context()
 			var deps []parser.WorkflowDependency
 			if len(args) > 0 {
@@ -71,6 +84,10 @@ func NewWorkflowCmd() *cobra.Command {
 			}
 			if err != nil {
 				return fmt.Errorf("failed to get workflow dependencies: %w", err)
+			}
+
+			if minNodeVersion > 0 {
+				deps = gh.FilterWorkflowDependenciesByNodeVersion(deps, minNodeVersion)
 			}
 
 			renderer := render.NewRenderer(opts.Exporter)
@@ -89,14 +106,13 @@ func NewWorkflowCmd() *cobra.Command {
 	f := cmd.Flags()
 	f.BoolVar(&nameOnly, "name-only", false, "Output only action names")
 	f.BoolVar(&nameWithRef, "name-with-ref", false, "Output action names with version ref (e.g. actions/checkout@v4)")
+	f.IntVar(&minNodeVersion, "min-node-version", 0, "Filter to show only actions/workflows that use a Node action older than the specified version (e.g. 24 shows node20, node16); automatically enables --recursive")
 	f.BoolVarP(&recursive, "recursive", "r", false, "Recursively traverse referenced action repositories")
 	f.StringVarP(&repo, "repo", "R", "", "The repository in the format 'owner/repo'")
 	f.StringVar(&ref, "ref", "", "Git reference (branch, tag, or commit SHA) to read workflow files from")
-	cmdutil.StringSliceEnumFlag(cmd, &fields, "fields", "", nil, render.WorkflowDependencyFields, "Comma-separated list of fields to display in table output")
+	cmdutil.StringSliceEnumFlag(cmd, &fields, "field", "", nil, render.WorkflowDependencyFields, "Comma-separated list of fields to display in table output")
 
-	// Use AddFormatFlags to set up --format, --jq, --template with PreRunE
-	cmdutil.AddFormatFlags(cmd, &opts.Exporter)
-	// Setup format flag to also accept "mermaid" and handle non-JSON format validation
-	cmdflags.SetupFormatFlagWithNonJSONFormats(cmd, &opts.Exporter, &format, "", []string{"dot", "drawio", "mermaid", "markdown"})
+	// Supported formats are the same as 'list' command, but with additional graph formats that visualize workflow and action relationships
+	_ = cmdflags.AddFormatFlags(cmd, &opts.Exporter, &format, "", []string{"dot", "drawio", "mermaid", "markdown", "tree"})
 	return cmd
 }

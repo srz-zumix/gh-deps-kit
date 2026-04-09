@@ -93,7 +93,7 @@ Parse workflow YAML (.github/workflows/*.yml) and action.yml files in the reposi
 
 | Flag | Short | Default | Description |
 | ------ | ------- | --------- | ------------- |
-| `--fields` | | `"Name,Version"` | Comma-separated list of fields to display in table output. Available fields: Name, Version, Owner, Repo, Path, Raw, Using, Node_Version |
+| `--field` | | `"Name,Version"` | Comma-separated list of fields to display in table output. Available fields: Name, Version, Owner, Repo, Path, Raw, Using, Node_Version |
 | `--format` | | `""` | Output format: {json\|dot\|drawio\|mermaid\|markdown} |
 | `--jq` | `-q` | | Filter JSON output using a jq expression |
 | `--name-only` | | `false` | Output only action names |
@@ -157,7 +157,7 @@ List dependency packages defined in a Unity project's Packages/manifest.json. Th
 
 | Flag | Short | Default | Description |
 | ------ | ------- | --------- | ------------- |
-| `--fields` | | `"Name,Version,SHA,Path,URL"` | Comma-separated list of fields to display in table output. Available fields: Name, Version, SHA, Path, URL |
+| `--field` | | `"Name,Version,SHA,Path,URL"` | Comma-separated list of fields to display in table output. Available fields: Name, Version, SHA, Path, URL |
 | `--format` | | | Output format: {json} |
 | `--jq` | `-q` | | Filter JSON output using a jq expression |
 | `--name-only` | | `false` | Output only package names |
