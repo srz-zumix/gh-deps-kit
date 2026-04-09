@@ -109,6 +109,6 @@ Use --min-node-version to filter for workflows and actions that depend on Node a
 	cmdutil.StringSliceEnumFlag(cmd, &fields, "field", "", nil, render.WorkflowDependencyFields, "Comma-separated list of fields to display in table output")
 
 	// Supported formats are the same as 'list' command, but with additional graph formats that visualize workflow and action relationships
-	cmdflags.AddFormatFlags(cmd, &opts.Exporter, &format, "", []string{"dot", "drawio", "mermaid", "markdown", "tree"})
+	_ = cmdflags.AddFormatFlags(cmd, &opts.Exporter, &format, "", []string{"dot", "drawio", "mermaid", "markdown", "tree"})
 	return cmd
 }
