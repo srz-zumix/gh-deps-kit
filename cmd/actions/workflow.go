@@ -34,7 +34,7 @@ func NewWorkflowCmd() *cobra.Command {
 Unlike the 'list' command which uses the Dependency Graph API, this command directly parses YAML files.
 Optionally specify a workflow by its ID, name, or filename to parse only that workflow.
 Use --min-node-version to filter for workflows and actions that depend on Node actions older than the specified version (automatically enables --recursive).`,
-		Args:  cobra.MaximumNArgs(1),
+		Args: cobra.MaximumNArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			repository, err := parser.Repository(parser.RepositoryInput(repo))
 			if err != nil {
@@ -108,9 +108,7 @@ Use --min-node-version to filter for workflows and actions that depend on Node a
 	f.StringVar(&ref, "ref", "", "Git reference (branch, tag, or commit SHA) to read workflow files from")
 	cmdutil.StringSliceEnumFlag(cmd, &fields, "field", "", nil, render.WorkflowDependencyFields, "Comma-separated list of fields to display in table output")
 
-	// Use AddFormatFlags to set up --format, --jq, --template with PreRunE
-	cmdutil.AddFormatFlags(cmd, &opts.Exporter)
-	// Setup format flag to also accept "mermaid" and handle non-JSON format validation
-	cmdflags.SetupFormatFlagWithNonJSONFormats(cmd, &opts.Exporter, &format, "", []string{"dot", "drawio", "mermaid", "markdown", "tree"})
+	// Supported formats are the same as 'list' command, but with additional graph formats that visualize workflow and action relationships
+	cmdflags.AddFormatFlags(cmd, &opts.Exporter, &format, "", []string{"dot", "drawio", "mermaid", "markdown", "tree"})
 	return cmd
 }
