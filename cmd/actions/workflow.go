@@ -60,7 +60,11 @@ Use --min-node-version to filter for workflows and actions that depend on Node a
 				refPtr = &ref
 			}
 
-			// --min-node-version requires recursive traversal to populate Using fields
+			// --min-node-version must be non-negative and requires recursive traversal
+			// to populate Using fields when the filter is enabled.
+			if minNodeVersion < 0 {
+				return fmt.Errorf("invalid value for --min-node-version: must be >= 0")
+			}
 			if minNodeVersion > 0 {
 				recursive = true
 			}
