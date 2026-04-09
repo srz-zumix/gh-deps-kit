@@ -67,10 +67,8 @@ func NewGraphCmd() *cobra.Command {
 	f.StringVarP(&repo, "repo", "R", "", "The repository in the format 'owner/repo'")
 	f.StringVarP(&output, "output", "o", "", "Output file path (default: stdout)")
 
-	// Use AddFormatFlags to set up --format, --jq, --template with PreRunE
-	cmdutil.AddFormatFlags(cmd, &opts.Exporter)
-	// Setup format flag to also accept "mermaid" and handle non-JSON format validation
-	cmdflags.SetupFormatFlagWithNonJSONFormats(cmd, &opts.Exporter, &format, "mermaid", []string{"dot", "drawio", "mermaid", "markdown"})
+	// Supported formats are the same as 'list' command, but with additional graph formats that visualize workflow and action relationships
+	cmdflags.AddFormatFlags(cmd, &opts.Exporter, &format, "mermaid", []string{"dot", "drawio", "mermaid", "markdown"})
 
 	return cmd
 }
