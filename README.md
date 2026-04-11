@@ -87,17 +87,23 @@ Supported tools: actionlint, zizmor
 gh deps-kit actions workflow [<workflow-id> | <workflow-name> | <filename>] [flags]
 ```
 
-Parse workflow YAML (.github/workflows/*.yml) and action.yml files in the repository to list GitHub Actions dependencies. Unlike the 'list' command which uses the Dependency Graph API, this command directly parses YAML files. Optionally specify a workflow by its ID, name, or filename to parse only that workflow.
+Parse workflow YAML (.github/workflows/*.yml) and action.yml files in the repository to list GitHub Actions dependencies.
+Unlike the `list` command which uses the Dependency Graph API, this command directly parses YAML files.
+Optionally specify a workflow by its ID, name, or filename to parse only that workflow.
+Use `--min-node-version` to filter for workflows and actions that depend on Node actions older than the specified version (automatically enables `--recursive`).
+Use `--filter-using` to filter by `runs.using` type; prefix match is supported (automatically enables `--recursive`).
 
 **Flags:**
 
 | Flag | Short | Default | Description |
 | ------ | ------- | --------- | ------------- |
-| `--field` | | `"Name,Version"` | Comma-separated list of fields to display in table output. Available fields: Name, Version, Owner, Repo, Path, Raw, Using, Node_Version |
-| `--format` | | `""` | Output format: {json\|dot\|drawio\|mermaid\|markdown} |
+| `--field` | | | Comma-separated list of fields to display in table output. Available fields: Name, Version, Owner, Repo, Path, Raw, Using, Node_Version, Job |
+| `--filter-using` | | | Filter to show only actions/workflows whose `runs.using` matches the specified type (e.g. `node16`, `composite`, `docker`); prefix match supported (e.g. `node` matches `node16`/`node20`); repeatable; automatically enables `--recursive` |
+| `--format` | | | Output format: {json\|dot\|drawio\|mermaid\|markdown\|tree} |
 | `--jq` | `-q` | | Filter JSON output using a jq expression |
+| `--min-node-version` | | `0` | Filter to show only actions/workflows that use a Node action older than the specified version (e.g. `24` shows node20, node16); automatically enables `--recursive` |
 | `--name-only` | | `false` | Output only action names |
-| `--name-with-ref` | | `false` | Output action names with version ref (e.g. actions/checkout@v4) |
+| `--name-with-ref` | | `false` | Output action names with version ref (e.g. `actions/checkout@v4`) |
 | `--recursive` | `-r` | `false` | Recursively traverse referenced action repositories |
 | `--ref` | | `""` | Git reference (branch, tag, or commit SHA) to read workflow files from |
 | `--repo` | `-R` | `""` | The repository in the format 'owner/repo' |
