@@ -25,6 +25,7 @@ func NewWorkflowCmd() *cobra.Command {
 	var format string
 	var fields []string
 	var minNodeVersion int
+	var filterUsing []string
 	opts := &WorkflowOptions{}
 
 	cmd := &cobra.Command{
@@ -33,7 +34,8 @@ func NewWorkflowCmd() *cobra.Command {
 		Long: `Parse workflow YAML (.github/workflows/*.yml) and action.yml files in the repository to list GitHub Actions dependencies.
 Unlike the 'list' command which uses the Dependency Graph API, this command directly parses YAML files.
 Optionally specify a workflow by its ID, name, or filename to parse only that workflow.
-Use --min-node-version to filter for workflows and actions that depend on Node actions older than the specified version (automatically enables --recursive).`,
+Use --min-node-version to filter for workflows and actions that depend on Node actions older than the specified version (automatically enables --recursive).
+Use --filter-using to filter by runs.using type (e.g. node16, composite, docker; prefix match supported; automatically enables --recursive).`,
 		Args: cobra.MaximumNArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			repository, err := parser.Repository(parser.RepositoryInput(repo))
@@ -60,12 +62,12 @@ Use --min-node-version to filter for workflows and actions that depend on Node a
 				refPtr = &ref
 			}
 
-			// --min-node-version must be non-negative and requires recursive traversal
+			// --min-node-version and --filter-using require recursive traversal
 			// to populate Using fields when the filter is enabled.
 			if minNodeVersion < 0 {
 				return fmt.Errorf("invalid value for --min-node-version: must be >= 0")
 			}
-			if minNodeVersion > 0 {
+			if minNodeVersion > 0 || len(filterUsing) > 0 {
 				recursive = true
 			}
 
@@ -90,6 +92,10 @@ Use --min-node-version to filter for workflows and actions that depend on Node a
 				deps = gh.FilterWorkflowDependenciesByNodeVersion(deps, minNodeVersion)
 			}
 
+			if len(filterUsing) > 0 {
+				deps = gh.FilterWorkflowDependenciesByUsing(deps, filterUsing)
+			}
+
 			renderer := render.NewRenderer(opts.Exporter)
 			if nameOnly || nameWithRef {
 				refs := gh.FlattenWorkflowDependencies(deps)
@@ -105,8 +111,9 @@ Use --min-node-version to filter for workflows and actions that depend on Node a
 	}
 	f := cmd.Flags()
 	f.BoolVar(&nameOnly, "name-only", false, "Output only action names")
-	f.BoolVar(&nameWithRef, "name-with-ref", false, "Output action names with version ref (e.g. actions/checkout@v4)")
+	f.BoolVar(&nameWithRef, "name-with-ref", false, "Output action names with version ref (e.g. actions/checkout@v6)")
 	f.IntVar(&minNodeVersion, "min-node-version", 0, "Filter to show only actions/workflows that use a Node action older than the specified version (e.g. 24 shows node20, node16); automatically enables --recursive")
+	cmdflags.NonEmptyStringArrayVar(cmd, &filterUsing, "filter-using", nil, "Filter to show only actions/workflows that use actions matching the specified runs.using type (e.g. node16, composite, docker); prefix match supported (e.g. node matches node16/node20); repeatable; automatically enables --recursive")
 	f.BoolVarP(&recursive, "recursive", "r", false, "Recursively traverse referenced action repositories")
 	f.StringVarP(&repo, "repo", "R", "", "The repository in the format 'owner/repo'")
 	f.StringVar(&ref, "ref", "", "Git reference (branch, tag, or commit SHA) to read workflow files from")
