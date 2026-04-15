@@ -403,7 +403,7 @@ gh deps-kit actions workflow --filter-using composite --filter-using docker
 # Inspect dependencies on a release tag
 gh deps-kit actions workflow --ref v2.3.0 --recursive
 
-# Inspect SBOM packages at a specific commit
+# Inspect SBOM packages for the repository default branch
 gh deps-kit list --repo owner/repo
 
 # Lint workflows from a feature branch
