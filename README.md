@@ -18,6 +18,16 @@ gh extension install srz-zumix/gh-deps-kit
 
 For detailed installation instructions and setup for each shell, see the [Shell Completion Guide](https://github.com/srz-zumix/go-gh-extension/blob/main/docs/shell-completion.md).
 
+## Agent Skills
+
+gh-deps-kit bundles agent skills for AI. Use the `skills` subcommand to install and manage them.
+
+```sh
+gh deps-kit skills [subcommand] [args...]
+```
+
+For details, see [Songmu/skillsmith](https://github.com/Songmu/skillsmith).
+
 ## Commands
 
 ### List dependency packages
