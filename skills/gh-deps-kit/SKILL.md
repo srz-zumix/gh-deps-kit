@@ -189,7 +189,7 @@ gh deps-kit actions workflow ci.yml
 # Recursively traverse referenced action repositories
 gh deps-kit actions workflow --recursive
 
-# Output as Mermaid graph (using annotates nodes with runs.using)
+# Output as Mermaid graph (which annotates nodes with runs.using)
 gh deps-kit actions workflow --recursive --format mermaid
 
 # Output as DOT graph with tooltip annotations
