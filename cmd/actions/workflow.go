@@ -113,7 +113,7 @@ Use --filter-using to filter by runs.using type (e.g. node16, composite, docker;
 	f.BoolVar(&nameOnly, "name-only", false, "Output only action names")
 	f.BoolVar(&nameWithRef, "name-with-ref", false, "Output action names with version ref (e.g. actions/checkout@v6)")
 	f.IntVar(&minNodeVersion, "min-node-version", 0, "Filter to show only actions/workflows that use a Node action older than the specified version (e.g. 24 shows node20, node16); automatically enables --recursive")
-	cmdflags.NonEmptyStringArrayVar(cmd, &filterUsing, "filter-using", nil, "Filter to show only actions/workflows that use actions matching the specified runs.using type (e.g. node16, composite, docker); prefix match supported (e.g. node matches node16/node20); repeatable; automatically enables --recursive")
+	cmdflags.NonEmptyStringSliceVar(cmd, &filterUsing, "filter-using", nil, "Filter to show only actions/workflows that use actions matching the specified runs.using type (e.g. node16, composite, docker); prefix match supported (e.g. node matches node16/node20); repeatable; automatically enables --recursive")
 	f.BoolVarP(&recursive, "recursive", "r", false, "Recursively traverse referenced action repositories")
 	f.StringVarP(&repo, "repo", "R", "", "The repository in the format 'owner/repo'")
 	f.StringVar(&ref, "ref", "", "Git reference (branch, tag, or commit SHA) to read workflow files from")
