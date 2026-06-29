@@ -146,13 +146,14 @@ List dependency packages related to GitHub Actions in the repository's SBOM. Use
 gh deps-kit submodule list [flags]
 ```
 
-List submodules of the specified repository. Use --recursive to include nested submodules.
+List submodules of the specified repository. Use --recursive to include nested submodules. Use --ignore-missing to skip submodules whose repository cannot be resolved.
 
 **Flags:**
 
 | Flag | Short | Default | Description |
 | ------ | ------- | --------- | ------------- |
 | `--format` | | | Output format: {json} |
+| `--ignore-missing` | | `false` | Skip submodules whose repository cannot be resolved |
 | `--jq` | `-q` | | Filter JSON output using a jq expression |
 | `--name-only` | | `false` | Output only submodule names |
 | `--recursive` | `-r` | `false` | Recursively list nested submodules |
