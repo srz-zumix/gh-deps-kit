@@ -283,7 +283,7 @@ gh deps-kit actions list --name-only
 gh deps-kit submodule list [flags]
 ```
 
-List submodules of the specified repository. Use `--recursive` to include nested submodules.
+List submodules of the specified repository. Use `--recursive` to include nested submodules. Use `--ignore-missing` to skip submodules whose repository cannot be resolved.
 
 ```sh
 # List submodules in the current repository
@@ -291,6 +291,9 @@ gh deps-kit submodule list
 
 # Include nested submodules
 gh deps-kit submodule list --recursive
+
+# Skip submodules whose repository cannot be resolved
+gh deps-kit submodule list --recursive --ignore-missing
 
 # JSON output
 gh deps-kit submodule list --format json
@@ -304,6 +307,7 @@ gh deps-kit submodule list --name-only
 | Flag | Short | Default | Description |
 | ------ | ------- | --------- | ------------- |
 | `--format` | | | Output format: {json} |
+| `--ignore-missing` | | `false` | Skip submodules whose repository cannot be resolved |
 | `--jq` | `-q` | | Filter JSON output using a jq expression |
 | `--name-only` | | `false` | Output only submodule names |
 | `--recursive` | `-r` | `false` | Recursively list nested submodules |
