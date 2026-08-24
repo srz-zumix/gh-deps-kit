@@ -1,5 +1,8 @@
 # gh-deps-kit
 
+> [!WARNING]
+> **This repository is deprecated.** Its functionality has been merged into [gh-secure-kit](https://github.com/srz-zumix/gh-secure-kit). Please migrate to `gh-secure-kit` for future updates.
+
 A tool to manage GitHub Dependency graph.
 
 ## Installation

@@ -5,6 +5,8 @@ description: gh-deps-kit is a GitHub CLI extension for inspecting dependency gra
 
 # gh-deps-kit
 
+> **Deprecated:** This extension is deprecated. Its functionality has been merged into [gh-secure-kit](https://github.com/srz-zumix/gh-secure-kit). Please migrate to `gh-secure-kit` for future updates.
+
 A GitHub CLI extension (`gh deps-kit`) to manage and inspect GitHub dependency graphs.
 It supports SBOM-based package listing, GitHub Actions dependency analysis (graph/lint/filter), Git submodule listing, and Unity package inspection.
 
